@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Переворачивание Изображений</title>
+  <style>
+    /* Стили для контейнера */
+    .flip-container {
+      position: relative;
+      width: 1920px; /* Укажите размер вашего изображения */
+      height: 1080px; /* Укажите размер вашего изображения */
+      perspective: 1920px; /* Добавляем перспективу для объёмного эффекта */
+      margin: 60px auto; /* Центрируем контейнер */
+    }
+
+    /* Стили для изображения */
+    #certificate {
+      width: 100%;
+      height: 100%;
+      display: block;
+      backface-visibility: hidden; /* Прячем обратную сторону при повороте */
+      transition: transform 0.6s; /* Плавный переход */
+      transform-style: preserve-3d; /* Сохраняем трёхмерность */
+    }
+
+    /* Стили для переворота */
+    .flip-container.flip #certificate {
+      transform: rotateY(180deg); /* Поворачиваем изображение на 180 градусов */
+    }
+
+    /* Стили для кнопки */
+    .telegram-button {
+      display: block;
+      width: 600px;
+      margin: 20px auto; /* Центрируем кнопку */
+      padding: 10px 20px;
+      font-size: 30px;
+      color: #ffffff;
+      background-color: #0088cc; /* Цвет, похожий на Telegram */
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Ховер-эффект для кнопки */
+    .telegram-button:hover {
+      background-color: #005f8d;
+    }
+  </style>
+</head>
+<body>
+  <!-- Контейнер для переворота -->
+  <div class="flip-container">
+    <!-- Изображение сертификата -->
+    <img id="certificate" src="1.png" alt="Сертификат">
+  </div>
+
+  <!-- Кнопка "Записаться" -->
+  <a href="https://t.me/anch27" target="_blank" class="telegram-button">Записаться</a>
+
+  <!-- Подключение JavaScript -->
+  <script>
+    // Массив с путями к изображениям
+    const images = ["1.png", "2.png"];
+    let currentIndex = 0;
+
+    // Функция для смены изображения с анимацией
+    function changeImage() {
+      const container = document.querySelector(".flip-container");
+      const imgElement = document.getElementById("certificate");
+
+      // Добавляем класс для анимации поворота
+      container.classList.add("flip");
+
+      // Ждём завершения анимации, чтобы сменить изображение
+      setTimeout(() => {
+        // Переключаем индекс на следующий (с циклическим переходом)
+        currentIndex = (currentIndex + 1) % images.length;
+
+        // Меняем источник изображения
+        imgElement.src = images[currentIndex];
+
+        // Убираем класс для возврата в исходное состояние
+        container.classList.remove("flip");
+      }, 800); // Задержка соответствует времени анимации в CSS (0.8s)
+    }
+
+    // Добавляем обработчик события на загрузку страницы
+    window.onload = function () {
+      const imgElement = document.getElementById("certificate");
+
+      // Проверяем, существует ли элемент изображения
+      if (imgElement) {
+        // Назначаем функцию смены изображения на клик
+        imgElement.addEventListener("click", changeImage);
+      } else {
+        console.error("Элемент с ID 'certificate' не найден.");
+      }
+    };
+  </script>
+</body>
+</html>
+
